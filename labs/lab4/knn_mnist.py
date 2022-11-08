@@ -67,8 +67,8 @@ class KNearestNeighbors:
         support_list = []
         for i, w in enumerate(self.X_t):            
             num = np.sum(np.multiply(v,w))
-            denom_v = np.sum(np.power(v,2))**(1/2)
-            denom_w = np.sum(np.power(w,2))**(1/2)
+            denom_v = np.sum(v**2)**(1/2)
+            denom_w = np.sum(w**2)**(1/2)
             denom = denom_v*denom_w
             support_list.append([i, 1 - num/denom])
         return self.take_k(support_list)
@@ -84,9 +84,10 @@ class KNearestNeighbors:
 # -- MAIN SECTION -- 
 if __name__=="__main__":
     # Reading the dataset
-    # Iris dataset
+
+    # MNIST dataset
     df = pd.read_csv(
-        "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data",
+        "https://raw.githubusercontent.com/dbdmg/data-science-lab/master/datasets/mnist_test.csv",
         header=None,
     )
 
@@ -99,13 +100,13 @@ if __name__=="__main__":
 
 
     # Splitting into X and Y the test/train dataframe
-    X_train = train.iloc[: , :-1]
+    X_train = train.iloc[: , 1:]
     print(f"X train {X_train.shape}")
-    y_train = train[df.shape[1]-1]
+    y_train = train[0]
     print(f"y_train {y_train.shape}")
-    X_test = test.iloc[: , :-1]
+    X_test = test.iloc[: , 1:]
     print(f"X test {X_test.shape}")
-    y_test = test[df.shape[1]-1]
+    y_test = test[0]
     print(f"y test {y_test.shape}")
 
     k = 4
