@@ -60,6 +60,7 @@ class KNearestNeighbors:
         dw = ((self.X_t**2).sum(axis=1))**.5
         denom = dv*dw
         support_list = (1 - np.absolute(num/denom))
+    
         votes = self.Y_t[support_list.argsort()[:self.k]]
         c = Counter(votes)
         return c.most_common(1)[0][0]
@@ -96,7 +97,7 @@ if __name__=="__main__":
     y_test = test[df.shape[1]-1]
     print(f"y test {y_test.shape}")
 
-    k = 4
+    k = 5
     K_n_e = KNearestNeighbors(k, "euclidean")
     K_n_c = KNearestNeighbors(k, "cosine")
     K_n_m = KNearestNeighbors(k, "manhattan")
@@ -105,14 +106,16 @@ if __name__=="__main__":
     K_n_c.fit(X_train, y_train)
     K_n_m.fit(X_train, y_train)
 
-    print("COSINE")
-    prediction = K_n_c.predict(X_test.values)
-    #print(confusion_matrix(y_test.values, prediction))
-    find_differences(y_test.values, prediction)
+
     print("EUCLIDEAN")
     prediction = K_n_e.predict(X_test.values)
     #print(confusion_matrix(y_test.values, prediction))
     find_differences(y_test.values, prediction)
+    print("COSINE")
+    prediction = K_n_c.predict(X_test.values)
+    #print(confusion_matrix(y_test.values, prediction))
+    find_differences(y_test.values, prediction)
+    
     print("MANHATTAN")
     prediction = K_n_m.predict(X_test.values)
     find_differences(y_test.values, prediction)
